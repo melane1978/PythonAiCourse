@@ -1,5 +1,6 @@
 import random
 from os import system, name
+from time import sleep
 
 
 class BlackJack():
@@ -24,44 +25,44 @@ class BlackJack():
 
   # calculate  total value of cards
   def scoreCards(cards):
+     print(cards)
      if sum(cards) == 21 and len(cards) == 2:
         # Thats a black jack
         return 21    
      # if above 21 remove
-     if 11 in cards and sum(cards) > 21:
-        cards.remove(11)
+     if 17 in cards and sum(cards) > 21:
         cards.add(1)  
      return sum(cards)
 
  # Compare player and dealers card 
   def compare(player, dealer):
      if player == dealer:
-        return "Its a drawn"
+        return "\t - Its a drawn"
      elif dealer == 0:
-        return "Dealer has BlackJack, You are the looser"
+        return "\t - Dealer has BlackJack, You are the looser"
      elif player == 0:
-        return "YOU ARE THE WINNER, congrats!"
+        return "\t - YOU ARE THE WINNER, congrats!"
      elif player > 21:
-        return "OMG, pratice on your pokerface, YOU LOSE!"
+        return "\t - OMG, pratice on your pokerface, YOU LOSE!"
      elif dealer > 21:
-        return " Dealer is over 21, YOU WIN!"
+        return "\t - Dealer is over 21, YOU WIN!"
      elif player > dealer:
-        return "You got better score than dealer, YOU win"
+        return "\t - You got better score than the dealer, YOU win"
      else:
-         return "You loose"
+         return "\t - You loose"
 
    # Lets create the PLAY
-
    
-
-   # create our lists to store score
+ # create our lists to store score
   player = []
   dealer = []
+ # And something to break the loop
   game_over = False
 
   player.append(cardDeal())
   player.append(cardDeal())
   dealer.append(cardDeal())
+
 
 # Lets do a play for the player
   while not game_over:
@@ -83,19 +84,22 @@ class BlackJack():
      else:
         print("\nDEALER talking to you so listen and think carefully about your next move:")
         lets_continue = input("  - Do you want another card? yes or no: ")
-        if lets_continue == "yes":
-           player.append(cardDeal())
+        if lets_continue == "yes" or lets_continue == "no":
+           if lets_continue == "yes":
+              player.append(cardDeal())
+           else:
+              game_over = True
         else:
-           game_over = True
-           
-           
+             print("ERROR, you need to say yes or no, do it again!")   
+             sleep(2)
+
 # Lest do a play for the dealer
   while dealer_score !=0 and dealer_score < 17:
      dealer.append(cardDeal())
      dealer_score = scoreCards(dealer)
 
   clear()
-  print("\nFINAL SCORE\n")
+  print("\n####### FINAL SCORE ###########\n")
   
   print(f"\nYour Final Hand: {player}, final score: {player_score}\n")
   
@@ -103,7 +107,7 @@ class BlackJack():
   print(compare(player_score, dealer_score))
 
 
-  print("\nGAME IS OVER, EXIT\n")
+  print("\n ####### GAME IS OVER, EXIT ##########\n")
 
 
 if __name__=='__main__':
