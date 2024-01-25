@@ -25,22 +25,22 @@ class BlackJack():
 
   # calculate  total value of cards
   def scoreCards(cards):
-     print(cards)
      if sum(cards) == 21 and len(cards) == 2:
         # Thats a black jack
         return 21    
-     # if above 21 remove
-     if 17 in cards and sum(cards) > 21:
-        cards.add(1)  
+     # if card is ace and sum is over 21, count the ace as a 1
+     if 11 in cards and sum(cards) > 21:
+         cards.remove(11)
+         cards.add(1)  
      return sum(cards)
 
  # Compare player and dealers card 
   def compare(player, dealer):
      if player == dealer:
         return "\t - Its a drawn"
-     elif dealer == 0:
+     elif dealer == 21:
         return "\t - Dealer has BlackJack, You are the looser"
-     elif player == 0:
+     elif player == 21:
         return "\t - YOU ARE THE WINNER, congrats!"
      elif player > 21:
         return "\t - OMG, pratice on your pokerface, YOU LOSE!"
@@ -94,7 +94,7 @@ class BlackJack():
              sleep(2)
 
 # Lest do a play for the dealer
-  while dealer_score !=0 and dealer_score < 17:
+  while dealer_score !=21 and dealer_score < 17 and player_score != 21:
      dealer.append(cardDeal())
      dealer_score = scoreCards(dealer)
 
