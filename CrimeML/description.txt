@@ -63,3 +63,61 @@ for lag in range(1, max_lag_period + 1):
 crime_data.dropna(inplace=True)
 
 # Now crime_data contains lag features representing historical crime data
+
+
+matplotlib
+import matplotlib.pyplot as plt
+
+# Assuming 'crime_data' is your entire dataset
+crime_data_to_visualize = crime_data
+
+# Extracting column names and values
+columns = crime_data_to_visualize.columns
+data = crime_data_to_visualize.values
+
+# Creating a Matplotlib figure and axis
+fig, ax = plt.subplots()
+
+# Creating the table
+table = ax.table(cellText=data, colLabels=columns, loc='center')
+
+# Setting table properties
+table.auto_set_font_size(False)
+table.set_fontsize(12)
+table.scale(1.2, 1.2)  # Adjust the table scale as needed
+
+# Removing axis
+ax.axis('off')
+
+# Displaying the table
+plt.show()
+
+
+seaborn
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Assuming 'crime_data' is your entire dataset
+# Assuming 'crime_data' is a pandas DataFrame
+
+# Step 1: Extract unique region names
+unique_regions = data['Region'].unique()
+
+# Step 2: Create a dictionary mapping numeric codes to region names
+region_names_to_codes = {region: i for i, region in enumerate(unique_regions)}
+
+# Display unique regions
+print("Unique regions:", unique_regions)
+
+# Display dictionary mapping region names to codes
+print("Region names to codes:", region_names_to_codes)
+
+data['Region'] = data['Region'].map(region_codes_to_names)
+
+# Selecting numerical columns only
+numerical_columns = data.select_dtypes(include='number')
+
+# Plotting a pairplot with a hue based on the 'Region' column
+sns.pairplot(data, hue='Region', vars=numerical_columns.columns)
+plt.show()
