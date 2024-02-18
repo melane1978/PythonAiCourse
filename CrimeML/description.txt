@@ -1,0 +1,65 @@
+# Data Preprocessing
+import pandas as pd
+
+# Assuming your data is stored in a DataFrame called 'crime_data'
+# Clean the data
+crime_data.dropna(inplace=True)
+
+# Extract features
+crime_data['Month'] = pd.to_datetime(crime_data['Period'], format='%b').dt.month
+crime_data['Year'] = crime_data['År'].astype(int)
+
+# Encode categorical variables if needed
+# You can use techniques like one-hot encoding or label encoding
+
+# Feature Engineering (Optional)
+# Create lag features if needed
+
+# Split Data
+train_data = crime_data[(crime_data['Year'] >= 2021) & (crime_data['Year'] <= 2023)]
+test_data = crime_data[crime_data['Year'] == 2024]
+
+# Model Selection and Training
+from statsmodels.tsa.arima.model import ARIMA
+
+# Assuming 'Region' and 'Brott' are encoded and 'Antal' is the target variable
+# You might need to loop through regions and crime types if you want to build separate models for each
+region = 'Botkyrka kommun'
+crime_type = '3-7 kap. Brott mot person'
+
+train_subset = train_data[(train_data['Region'] == region) & (train_data['Brott'] == crime_type)]['Antal']
+
+model = ARIMA(train_subset, order=(5,1,0))
+fitted_model = model.fit()
+
+# Model Evaluation
+# Evaluate the model's performance on the test set using appropriate metrics
+
+# Prediction for 2024
+forecast = fitted_model.forecast(steps=len(test_data))
+
+# You'll have to adjust this according to your data structure and model choice
+print(forecast)
+
+
+
+LAG 
+
+
+# Assuming your data is stored in a DataFrame called 'crime_data'
+# Assuming 'Region' and 'Brott' are already encoded and 'Antal' is the target variable
+
+# Sort the data by region, crime type, and date
+crime_data.sort_values(by=['Region', 'Brott', 'Year', 'Month'], inplace=True)
+
+# Define the maximum lag period (e.g., 12 months)
+max_lag_period = 12
+
+# Create lag features for the target variable 'Antal'
+for lag in range(1, max_lag_period + 1):
+    crime_data[f'Antal_lag_{lag}'] = crime_data.groupby(['Region', 'Brott'])['Antal'].shift(lag)
+
+# Drop rows with NaN values resulting from shifting
+crime_data.dropna(inplace=True)
+
+# Now crime_data contains lag features representing historical crime data
