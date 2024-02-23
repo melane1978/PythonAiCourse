@@ -1,0 +1,18 @@
+optimizer = optim.Adam(model.parameters(), lr=0.002)
+
+Mean Squared Error: 1070374.3752209248
+
+
+Mean Squared Error: 24087.686176098352
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+
+
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+Epoch: 100000/100000, Loss: 12450.2129
+Mean Squared Error: 22535.597970109033
+
+
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+Epoch: 100000/100000, Loss: 33169.2461
+Mean Squared Error: 55819.67097977562

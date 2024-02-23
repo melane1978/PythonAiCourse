@@ -121,3 +121,216 @@ numerical_columns = data.select_dtypes(include='number')
 # Plotting a pairplot with a hue based on the 'Region' column
 sns.pairplot(data, hue='Region', vars=numerical_columns.columns)
 plt.show()
+
+
+pytorch
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# Load the data
+data = pd.read_csv('your_data.csv')
+
+# Preprocessing
+# Handle missing values if any
+# Encode categorical variables
+# Scale numerical features
+# Perform feature engineering if necessary
+
+# Split the data into train and test sets
+X = data.drop(columns=['Antal'])  # Features
+y = data['Antal']  # Target variable
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Standardize features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Define the model
+class CrimePredictor(nn.Module):
+    def __init__(self, input_dim):
+        super(CrimePredictor, self).__init__()
+        self.fc1 = nn.Linear(input_dim, 64)
+        self.fc2 = nn.Linear(64, 32)
+        self.fc3 = nn.Linear(32, 1)
+        
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+# Initialize the model
+input_dim = X_train_scaled.shape[1]
+model = CrimePredictor(input_dim)
+
+# Define loss function and optimizer
+criterion = nn.MSELoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# Convert data to PyTorch tensors
+X_train_tensor = torch.tensor(X_train_scaled, dtype=torch.float32)
+y_train_tensor = torch.tensor(y_train.values, dtype=torch.float32).view(-1, 1)
+
+# Train the model
+epochs = 1000
+for epoch in range(epochs):
+    optimizer.zero_grad()
+    outputs = model(X_train_tensor)
+    loss = criterion(outputs, y_train_tensor)
+    loss.backward()
+    optimizer.step()
+
+    if epoch % 100 == 0:
+        print(f'Epoch [{epoch + 1}/{epochs}], Loss: {loss.item():.4f}')
+
+# Make predictions for 2024
+# You need to prepare the input data for 2024
+# Then, scale the input data using the same scaler used for training
+# Finally, make predictions using the trained model
+# Remember to inverse transform the predictions if you scaled the target variable
+
+# Evaluate the model
+# You can evaluate the model using the test set or cross-validation techniques
+
+
+
+
+ dummy_values = {
+                'Year': 2024,
+                'Crime_Type': crime_type,
+                'Antal_lag_1': np.random.normal(avg_values['Antal_lag_1'], 10),
+                'Antal_lag_2': np.random.normal(avg_values['Antal_lag_2'], 10),
+                'Antal_lag_3': np.random.normal(avg_values['Antal_lag_3'], 10),
+                'Antal_lag_4': np.random.normal(avg_values['Antal_lag_4'], 10),
+                'Antal_lag_5': np.random.normal(avg_values['Antal_lag_5'], 10),
+                'Antal_lag_6': np.random.normal(avg_values['Antal_lag_6'], 10),
+                'Antal_lag_7': np.random.normal(avg_values['Antal_lag_7'], 10),
+                'Antal_lag_8': np.random.normal(avg_values['Antal_lag_8'], 10),
+                'Antal_lag_9': np.random.normal(avg_values['Antal_lag_9'], 10),
+                'Antal_lag_10': np.random.normal(avg_values['Antal_lag_10'], 10),
+                'Antal_lag_11': np.random.normal(avg_values['Antal_lag_11'], 10),
+                'Antal_lag_12': np.random.normal(avg_values['Antal_lag_12'], 10),
+
+
+                # Save this code in a new Python file, for example, crime_prediction_2024.py
+
+import pandas as pd
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
+from crimeMl import X_train, data
+
+
+# Prediction for 2024
+# Define the number of samples and features for the dummy data
+num_samples_2024 = 100  # You can adjust this as needed
+num_features = X_train.shape[1]  # Number of features in your training data
+
+# Generate random dummy data for the year 2024 with the same structure as your training data
+# You may need to adjust this based on the actual structure of your training data
+X_2024_dummy = np.random.rand(num_samples_2024, num_features)  # Generate random features
+# You can also generate specific values or patterns based on your understanding of the data
+
+# Print the first few rows of the real data sample
+real_data_sample = data.head()
+print("Sample of Real Data:")
+print(real_data_sample)
+
+# Optionally, you can display the first few rows of the dummy data to verify the structure
+print("Dummy Data for 2024:")
+print(X_2024_dummy[:5])  # Display the first 5 rows as an example
+
+def generate_dummy_data(grouped_data, num_regions=33):
+    # Mapping dictionary for crime types
+    crime_type_mapping = {
+        1: '3 kap. Brott mot liv och hälsa',
+        2: '3-7 kap. Brott mot person',
+        3: '4 kap. Brott mot frihet och frid',
+        4: '5 kap. Ärekränkningsbrott',
+        5: '6 kap. Sexualbrott',
+        6: '7 kap. Brott mot familj',
+        7: 'därav misshandel inkl. grov'
+    }
+    
+    # Define the list of municipalities
+    municipalities = ['Botkyrka kommun', 'Danderyd kommun', 'Haninge kommun', 'Huddinge kommun',
+                  'Järfälla kommun', 'Knivsta kommun', 'Lidingö kommun', 'Nacka kommun',
+                  'Norrtälje kommun', 'Salem kommun', 'Sigtuna kommun', 'Sollentuna kommun',
+                  'Solna kommun', 'Bromma (Sthlm)', 'Enskede - Årsta - Vantör (Sthlm)',
+                  'Farsta (Sthlm)', 'Hägersten-Älvsjö (Sthlm)', 'Hässelby - Vällingby (Sthlm)',
+                  'Kungsholmen (Sthlm)', 'Norrmalm (Sthlm)', 'Rinkeby-Kista (Sthlm)',
+                  'Skarpnäck (Sthlm)', 'Skärholmen (Sthlm)', 'Spånga - Tensta (Sthlm)',
+                  'Sundbyberg kommun', 'Södertälje kommun', 'Tyresö kommun', 'Täby kommun',
+                  'Upplands Väsby kommun', 'Vallentuna kommun', 'Vaxholm kommun',
+                  'Värmdö kommun', 'Österåker kommun']
+
+    # Define the list of encoded region values
+    encoded_regions = list(range(1, 34))  # Assuming there are 33 regions
+
+    # Create the region_mapping dictionary 
+    region_mapping = dict(zip([f'Region_{region}' for region in encoded_regions], municipalities))
+
+    # Calculate historical averages for each feature
+    historical_averages = grouped_data.groupby('Crime_Type').mean()
+    
+    # Initialize an empty list to store the dummy data
+    dummy_data_list = []
+    
+    # Generate dummy data for each crime type
+    for crime_type, avg_values in historical_averages.iterrows():
+        # Convert crime type to string representation
+        crime_type_str = crime_type_mapping.get(crime_type)
+        if crime_type_str is None:
+            print(f"Crime type '{crime_type}' not found in mapping dictionary.")
+            continue
+        
+        # Generate dummy data for each month in 2024
+        for month in range(1, 13):
+            # Generate random region indices 
+            region_indices = np.random.choice(num_regions, size=num_regions, replace=False)
+            # Adjust values based on historical averages (you can modify this based on your data)
+            dummy_values = {
+                'Year': 2024,
+                'Crime_Type': crime_type_str,
+                'Antal_lag_1': np.random.normal(avg_values['Antal_lag_1'], 10),
+                'Antal_lag_2': np.random.normal(avg_values['Antal_lag_2'], 10),
+                'Antal_lag_3': np.random.normal(avg_values['Antal_lag_3'], 10),
+                'Antal_lag_4': np.random.normal(avg_values['Antal_lag_4'], 10),
+                'Antal_lag_5': np.random.normal(avg_values['Antal_lag_5'], 10),
+                'Antal_lag_6': np.random.normal(avg_values['Antal_lag_6'], 10),
+                'Antal_lag_7': np.random.normal(avg_values['Antal_lag_7'], 10),
+                'Antal_lag_8': np.random.normal(avg_values['Antal_lag_8'], 10),
+                'Antal_lag_9': np.random.normal(avg_values['Antal_lag_9'], 10),
+                'Antal_lag_10': np.random.normal(avg_values['Antal_lag_10'], 10),
+                'Antal_lag_11': np.random.normal(avg_values['Antal_lag_11'], 10),
+                'Antal_lag_12': np.random.normal(avg_values['Antal_lag_12'], 10),
+            }
+            # Replace region column values with municipality names
+            for i, region_col in enumerate(region_mapping.keys()):
+                dummy_values[region_mapping[region_col]] = np.random.randint(0, 2)  # Randomly assign 0 or 1 for region presence
+            # Append dummy values to the dummy data list
+            dummy_data_list.append(dummy_values)
+    
+    # Create a DataFrame from the list of dummy data
+    dummy_data = pd.DataFrame(dummy_data_list)
+    
+    return dummy_data
+
+
+
+# Generate dummy data for 2024
+dummy_data_2024 = generate_dummy_data(data)
+
+# Print the first few rows of the generated dummy data
+print(dummy_data_2024.head())
+
+Mean Squared Error: 1070374.3752209248
