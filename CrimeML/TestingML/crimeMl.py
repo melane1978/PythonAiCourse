@@ -9,13 +9,13 @@ import numpy as np
 
 
 # Load your dataset
-data = pd.read_csv("./CrimeML/data/crimedata.txt")
+data = pd.read_csv("./CrimeML/data/crimedata.csv")
 
 # One-hot encoding for region column
 data = pd.get_dummies(data, columns=['Region'])
 
 # Aggregating data by Year and Crime Type
-grouped_data = data.groupby(['Year', 'Crime_Type']).sum().reset_index()
+grouped_data = data.groupby(['Year', 'Crime']).sum().reset_index()
 
 # Data Splitting
 train_data = grouped_data[grouped_data['Year'] < 2023]  # Keep data until 2023 for training
@@ -27,11 +27,11 @@ for lag_index in range(1, 13):
     lag_column = 'Antal_lag_' + str(lag_index)
    
     # # Selecting features and target variable
-    X_train = train_data.drop(['Year', 'Crime_Type', lag_column], axis=1).values.astype(float)
+    X_train = train_data.drop(['Year', 'Crime', lag_column], axis=1).values.astype(float)
     y_train = train_data[lag_column].values.astype(float)
     
 
-    X_test = test_data.drop(['Year', 'Crime_Type', lag_column], axis=1).values.astype(float)
+    X_test = test_data.drop(['Year', 'Crime', lag_column], axis=1).values.astype(float)
     y_test = test_data[lag_column].values.astype(float)
 
 print("How many features do i have in my train data")
@@ -77,7 +77,7 @@ criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Training
-num_epochs = 100000
+num_epochs = 10000
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0
