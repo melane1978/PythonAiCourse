@@ -1,4 +1,3 @@
-# Save this code in a new Python file, for example, crime_prediction_2024.py
 import subprocess
 import pandas as pd
 import numpy as np
@@ -6,16 +5,17 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
-from crimeMl import data, X_train, CrimePredictor, CrimeDataset, grouped_data
+from CrimeML import data, X_train, CrimePredictor, CrimeDataset, grouped_data
 
 
-num_samples_2024 = 46
-num_features = X_train.shape[1] 
-X_2024_dummy = np.random.rand(num_samples_2024, num_features)  # Generate random features
+num_samples_2024 = 44
+num_features = X_train.shape[1]  
+X_2024_dummy = np.random.rand(num_samples_2024, num_features)  # Ge0nerate random features
 real_data_sample = data.head()
 # print(X_2024_dummy[:5])  # Display the first 5 rows as an example
 
-def generate_dummy_data(grouped_data, num_regions=33):
+# Numbers of region is less in training data because some where remove when they had NaN values
+def generate_dummy_data(grouped_data, num_regions=31):
     # Calculate historical averages for each feature
     historical_averages = grouped_data.groupby('Crime').mean()
 
@@ -88,8 +88,7 @@ print(model)
 model.load_state_dict(torch.load("./CrimeML/TestingML/saved_models/crime_prediction_model.pth"))
 model.eval()
 
-#Make predictions for 2024
-#Make predictions for 2024
+# Make predictions for 2024
 predictions_2024 = []
 with torch.no_grad():
     for inputs, _ in dataloader_2024:
@@ -99,10 +98,13 @@ with torch.no_grad():
 # Convert predictions_2024 to a numpy array
 predictions_2024 = np.array(predictions_2024)
 
+# Set negative values to zero
+predictions_2024[predictions_2024 < 0] = 0
+
 # Extract predicted lag columns names
 predicted_lag_columns = [f'Predicted_Antal_lag_{i}' for i in range(1, 13)]
 # Define the number of regions based on the dataset you provided
-num_regions = 33
+num_regions = 31
 
 
 # Mapping dictionary for month names

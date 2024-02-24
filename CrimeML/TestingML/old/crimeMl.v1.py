@@ -1,11 +1,12 @@
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
-import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
+import numpy as np
+
 
 # Load your dataset
 data = pd.read_csv("./CrimeML/data/crimedata.csv")
@@ -20,19 +21,22 @@ grouped_data = data.groupby(['Year', 'Crime']).sum().reset_index()
 train_data = grouped_data[grouped_data['Year'] < 2023]  # Keep data until 2023 for training
 test_data = grouped_data[grouped_data['Year'] == 2023]  # Use data from 2023 for testing
 
-# Training and Evaluation for each Antal_Lag_* column
+
+#Training and Evaluation for each Antal_Lag_* column
 for lag_index in range(1, 13):
     lag_column = 'Antal_lag_' + str(lag_index)
    
-    # Selecting features and target variable
+    # # Selecting features and target variable
     X_train = train_data.drop(['Year', 'Crime', lag_column], axis=1).values.astype(float)
     y_train = train_data[lag_column].values.astype(float)
     
+
     X_test = test_data.drop(['Year', 'Crime', lag_column], axis=1).values.astype(float)
     y_test = test_data[lag_column].values.astype(float)
 
 print("How many features do i have in my train data")
 print(X_train.shape[1])
+
 
 # Define dataset and dataloader
 class CrimeDataset(Dataset):
@@ -49,6 +53,8 @@ class CrimeDataset(Dataset):
 train_dataset = CrimeDataset(X_train, y_train)
 train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 
+
+
 # Define the neural network architecture
 class CrimePredictor(nn.Module):
     def __init__(self, input_size):
@@ -63,27 +69,15 @@ class CrimePredictor(nn.Module):
         x = self.fc3(x)
         return x
 
-# Custom loss function to penalize negative predictions
-class CustomLoss(nn.Module):
-    def __init__(self):
-        super(CustomLoss, self).__init__()
-
-    def forward(self, predictions, targets):
-        # Calculate Mean Squared Error
-        mse_loss = nn.functional.mse_loss(predictions, targets)
-        # Penalize negative predictions
-        negative_penalty = torch.mean(torch.relu(-predictions))
-        # Add penalty to MSE loss
-        total_loss = mse_loss + negative_penalty
-        return total_loss
 
 # Initialize model, loss function, and optimizer
 model = CrimePredictor(input_size=X_train.shape[1])
-criterion = CustomLoss()  # Using the custom loss function
+print(model)
+criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Training
-num_epochs = 100000
+num_epochs = 200000
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0

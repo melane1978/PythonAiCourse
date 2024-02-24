@@ -16,3 +16,26 @@ Mean Squared Error: 22535.597970109033
 train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 Epoch: 100000/100000, Loss: 33169.2461
 Mean Squared Error: 55819.67097977562
+
+
+better predictions
+Epoch: 99996/100000, Loss: 3475.3772
+Epoch: 99997/100000, Loss: 3471.1396
+Epoch: 99998/100000, Loss: 3470.1582
+Epoch: 99999/100000, Loss: 3470.0356
+Epoch: 100000/100000, Loss: 3471.5798
+Mean Squared Error: 25341.767486049794
+
+lets run higher epochs!
+
+Epoch: 99998/100000, Loss: 3587.7129
+Epoch: 99999/100000, Loss: 2522.7209
+Epoch: 100000/100000, Loss: 1462.7253
+Mean Squared Error: 32163.494226257848
+
+
+Epoch: 99997/100000, Loss: 8233.6719
+Epoch: 99998/100000, Loss: 8234.2109
+Epoch: 99999/100000, Loss: 8232.8145
+Epoch: 100000/100000, Loss: 8231.9336
+Mean Squared Error: 23715.314592228537
