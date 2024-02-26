@@ -83,7 +83,7 @@ criterion = CustomLoss()  # Using the custom loss function
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Training
-num_epochs = 200000
+num_epochs = 1000
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0

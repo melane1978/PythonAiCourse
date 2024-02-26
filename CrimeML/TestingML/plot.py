@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Load the data
 data_2023 = pd.read_csv('./CrimeML/data/data2023.csv')
@@ -36,8 +37,11 @@ while True:
     selected_Crime = Crimes[Crime_index]
 
     # Filter data for comparison
-    data_2023_compare = data_2023[(data_2023['Region'] == selected_region) & (data_2023['Crime'] == selected_Crime)]
-    predictions_2024_compare = predictions_2024[(predictions_2024['Region'] == selected_region) & (predictions_2024['Crime'] == selected_Crime)]
+    data_2023_compare = data_2023[(data_2023['Region'] == selected_region) & 
+                                   (data_2023['Crime'] == selected_Crime) & 
+                                   (data_2023['Year'] == 2023)]
+    predictions_2024_compare = predictions_2024[(predictions_2024['Region'] == selected_region) & 
+                                                 (predictions_2024['Crime'] == selected_Crime)]
 
     # Plotting
     plt.figure(figsize=(12, 8))
@@ -46,7 +50,10 @@ while True:
     plt.scatter(data_2023_compare['Month'], data_2023_compare['Antal'], label='2023 Data')
 
     # Plot predicted data for 2024
-    plt.scatter(predictions_2024_compare['Month'], predictions_2024_compare['Antal'], label='2024 Predictions')
+    plt.scatter(predictions_2024_compare['Month'], predictions_2024_compare['Predicted_Crime'], label='2024 Predictions')
+
+    # Set y-axis ticks at intervals of 25
+    plt.yticks(np.arange(0, 525, 25))
 
     # Adding labels and title
     plt.xlabel('Month')
