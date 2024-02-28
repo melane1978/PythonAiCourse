@@ -13,7 +13,7 @@ Here is how you use it:
 
 # Testing CrimeML AI.
 
-1. Run the CrimeML1.py script, you can change epocs to what you want in the script, its on 100000 now.
+1. Run the CrimeML1.py script, you can change epocs to what you want in the script, its on 10000 now.
 
 2. When its done, if you want to see the result, run the pythonscript
 predict2024v1.py. That script fix the data to be readable and open a menu in your terminal. There you can choose which Region and crime you want to see, the predicted values against 2023 data.
