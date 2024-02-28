@@ -8,7 +8,7 @@ predictions_2024 = pd.read_csv('./CrimeML/data/predictions_2024_reshaped.csv')
 
 # Remove duplcates of region for my menu below
 regions = data_2023['Region'].unique()
-
+print(regions)
 
 # create a Menu for you to choose which region and crime
 while True:
@@ -37,10 +37,15 @@ while True:
 
     # Filter data for comparison
     data_2023_compare = data_2023[(data_2023['Region'] == selected_region) & 
-                                   (data_2023['Crime'] == selected_Crime) & 
-                                   (data_2023['Year'] == 2023)]
+                                   (data_2023['Crime'] == selected_Crime)]
+                    
     predictions_2024_compare = predictions_2024[(predictions_2024['Region'] == selected_region) & 
                                                  (predictions_2024['Crime'] == selected_Crime)]
+
+    # print(data_2023_compare)
+    # print(predictions_2024_compare)
+    # # print(data_2023_compare['Antal'])
+    # # print(predictions_2024_compare['Predicted_Crime'])
 
     # Plotting my figure
     plt.figure(figsize=(12, 8))
@@ -51,10 +56,10 @@ while True:
     # Plot predicted data for 2024
     plt.scatter(predictions_2024_compare['Month'], predictions_2024_compare['Predicted_Crime'], label='2024 Predictions')
 
-    # Set y-axis ticks at intervals of 25
+    # # Set y-axis ticks at intervals of 25
     plt.yticks(np.arange(0, 525, 25))
 
-    # Adding labels and title
+    # # Adding labels and title
     plt.xlabel('Month')
     plt.ylabel('Antal')
     plt.title(f'Comparison of Data 2023 and Predictions 2024 for {selected_region}, {selected_Crime}')

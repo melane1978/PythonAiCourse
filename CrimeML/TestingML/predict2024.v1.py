@@ -1,12 +1,6 @@
 import pandas as pd
 import subprocess
 
-# Why did i create this file?
-# I want a readable plot for each region, month and crimetype, the data i have will be difficult to get in one plot.
-# First i need to make all int numbers to be readable for the human eye.
-
-
-# These Values i got from my Jupyter file
 # Mapping dictionary for month names
 month_mapping = {
     1: 'January',
@@ -84,20 +78,24 @@ for index, row in predictions_df.iterrows():
         'Region': region_name,
         'Month': month_mapping[row['Month']],
         'Crime': crime_mapping[row['Crime_Type']],
-        'Predicted_Crime': row['Predicted_Crime']
+        'Predicted_Crime': round(row['Predicted_Crime'])  # Round and convert to integer
     })
 
 # Convert reshaped data to DataFrame
 reshaped_df = pd.DataFrame(reshaped_data)
 
+# Convert the 'Month' column to categorical with the specified order
+reshaped_df['Month'] = pd.Categorical(reshaped_df['Month'], categories=month_mapping.values(), ordered=True)
+
 # Sort the reshaped DataFrame by month and region
-#reshaped_df = reshaped_df.sort_values(by=['Region', 'Month']).reset_index(drop=True)
+reshaped_df = reshaped_df.sort_values(by=['Region', 'Month']).reset_index(drop=True)
 reshaped_df = reshaped_df.drop_duplicates()
+
 # Save the reshaped DataFrame to a CSV file
 reshaped_df.to_csv('./CrimeML/data/predictions_2024_reshaped.csv', index=False)
 
-# Run the plot script where i created functions to reach my goal
+#Run the plot script where i created functions to reach my goal
 try:
-    subprocess.run(["python", "./CrimeML/TestingML/plot.py"])
+    subprocess.run(["python", "./CrimeML/TestingML/guiPlot.py"])
 except Exception as e:
     print(f"An error occurred: {e}")
