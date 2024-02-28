@@ -91,7 +91,7 @@ for index, row in predictions_df.iterrows():
 reshaped_df = pd.DataFrame(reshaped_data)
 
 # Sort the reshaped DataFrame by month and region
-reshaped_df = reshaped_df.sort_values(by=['Region', 'Month']).reset_index(drop=True)
+#reshaped_df = reshaped_df.sort_values(by=['Region', 'Month']).reset_index(drop=True)
 reshaped_df = reshaped_df.drop_duplicates()
 # Save the reshaped DataFrame to a CSV file
 reshaped_df.to_csv('./CrimeML/data/predictions_2024_reshaped.csv', index=False)
