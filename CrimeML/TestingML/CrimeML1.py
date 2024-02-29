@@ -5,21 +5,24 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+
+# Check if i can use the CUDA memory instead, but my MacBook will not support that
+if torch.cuda.is_available():
+    #device = torch.device("cuda")  # Use GPU
+    print("CUDA is available. You can use GPU.")
+else:
+    #device = torch.device("cpu")  # Use CPU
+    print("CUDA is not available. Using CPU.")
+
 # Lets load my data, i had do redo it because i notice it was many duplicate values in the first file
 data = pd.read_csv('./CrimeML/data/crimedata.csv')
 
 # separate columns, combine them into a datetime column, easier to have on column that two
 data['Date'] = pd.to_datetime(data[['Year', 'Month']].assign(day=1))
 
-
 # Data preprocessing
 scaled_data = pd.DataFrame()
 scaled_dfs = []
-
-# Here i took help from chatgp, because did'nt really know how to break down all my data and make features of it the right way,
-# because MATH is not my strong side.
-#Scalers are used to scale or normalize the data, ensuring that each feature contributes equally to the analysis 
-#and preventing features with larger scales from dominating the model.
 
 # Iterate over each group of data (grouped by crime type and region)
 for (crime_type, region), group in data.groupby(['Crime', 'Region']):
@@ -41,13 +44,9 @@ for (crime_type, region), group in data.groupby(['Crime', 'Region']):
     # Concatenate all scaled DataFrames along axis=1 to form the final DataFrame
     scaled_data = pd.concat(scaled_dfs, axis=1)
 
-#print(scaled_data)
-
 # Convert our scaled data to pytorch sensor, 
 crime_tensors = {column_name: torch.Tensor(scaled_data[column_name].values).view(-1, 1)
                  for column_name in scaled_data.columns}
-
-#print(crime_tensors)
 
 # # Define a simple neural network model
 class NeuralNetwork(nn.Module):
@@ -80,7 +79,6 @@ for column_name, crime_tensor in crime_tensors.items():
         if epoch % 100 == 0:
             print(f'Crime Type and Region: {column_name}, Epoch [{epoch+1}/{1000}], Loss: {loss.item():.4f}')
     models[column_name] = model
-
 
 # Start with my prediction for all months in 2024
 scalers = {} 

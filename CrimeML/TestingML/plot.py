@@ -41,12 +41,6 @@ while True:
                     
     predictions_2024_compare = predictions_2024[(predictions_2024['Region'] == selected_region) & 
                                                  (predictions_2024['Crime'] == selected_Crime)]
-
-    # print(data_2023_compare)
-    # print(predictions_2024_compare)
-    # # print(data_2023_compare['Antal'])
-    # # print(predictions_2024_compare['Predicted_Crime'])
-
     # Plotting my figure
     plt.figure(figsize=(12, 8))
 
