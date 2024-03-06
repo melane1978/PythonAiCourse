@@ -49,8 +49,7 @@ So how the NM module is set up now appears to be the best practies for this AI.
 
 I was intrested to use Pytorch CUDA memory, to see if my AI will perfom better, but do to my computer being a Mac it does not support CUDA. Therefore I needed to use the CPU instead, but for a much smaller AI I concluded that this was not a problem.
 
-My final thoughts; can this predicted data be correct? No, it can not, but it seems to follow a good pathern and 
-the loss is not very high.
+My final thoughts; can this predicted data be correct? No, it can not, because to predict crimes may be very difficult, its alot that needs to be investigated, like econmy, unemployment, age, and alot more. But my AI seems to follow a good pathern and the loss is not very high.
 
 Version 1.0 CrimeML AI, 2024-02-29
 melane1978@gmail.com
